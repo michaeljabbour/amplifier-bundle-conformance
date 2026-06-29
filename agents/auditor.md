@@ -35,9 +35,21 @@ them. When a check turns on a subtlety the rubric doesn't fully settle — a
 genuinely novel composition, an exception you can't adjudicate from the repo
 alone — **read the cited foundation doc** (it is available via the foundation
 bundle this agent is composed under), and if it is still a judgment call,
-**delegate to `foundation:foundation-expert`** with the specific question. Do not
-invent ecosystem rules. The novel thing you contribute is the *rubric applied
-with evidence*, not new opinions about the ecosystem.
+escalate to the right expert. Route by the *kind* of question:
+
+- **Structural / shape questions** → `foundation:foundation-expert`. The default.
+  "Is this thin-bundle-shaped? Is this `@mention` placement right? Is this behavior
+  wired? Is this a legit exception to a rubric rule?" This expert owns the
+  `BUNDLE_GUIDE.md`/`CONCEPTS.md` knowledge the rubric is grounded in.
+- **Ecosystem-existence questions** → `amplifier:amplifier-expert`. "Does this
+  capability already exist in the ecosystem under another name? Should this be its
+  own module/repo instead of reinvented here? Does this duplicate something in
+  MODULES.md?" This is the W1 ("reinventing what foundation provides") and
+  "should-this-exist" axis — it needs the ecosystem catalog, which `amplifier-expert`
+  owns and `foundation-expert` does not.
+
+Do not invent ecosystem rules. The novel thing you contribute is the *rubric
+applied with evidence*, not new opinions about the ecosystem.
 
 ## Method
 

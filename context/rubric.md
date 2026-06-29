@@ -2,6 +2,10 @@
 
 <!--
 CHANGELOG
+  v0.2.1 — Dual-expert escalation: structural/shape open questions route to
+    foundation:foundation-expert (default); ecosystem-existence questions
+    ("does this already exist? should it be its own module?", the W1 axis) route
+    to amplifier:amplifier-expert, which owns the MODULES.md catalog.
   v0.2.0 — Evidence-driven from real fleet audits (idd, letsgo, occams-machete):
     - NEW W7 "Orphaned context file" — a context/*.md referenced by nothing.
       Recurred 3× in a single bundle (letsgo); validated NON-false-positive on

@@ -1,7 +1,7 @@
 ---
 bundle:
   name: conformance
-  version: 0.2.0
+  version: 0.2.1
   description: >-
     An Amplifier-way conformance auditor for bundle repos. Where validate-bundle-repo
     asks "does it load?", this asks "is it shaped right for the ecosystem?" — it scans

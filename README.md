@@ -23,7 +23,7 @@ bundle codifies that audit.
 
 | Piece | Path | Role |
 |---|---|---|
-| **Auditor agent** | `agents/auditor.md` | Reads the repo, applies the rubric, cites foundation docs, defers true judgment calls to `foundation:foundation-expert`. |
+| **Auditor agent** | `agents/auditor.md` | Reads the repo, applies the rubric, cites foundation docs, and escalates genuine judgment calls to the experts (see below). |
 | **The rubric** | `context/rubric.md` | The codified, severity-tiered checks — each grounded in a foundation-doc §heading (referenced, not copied). |
 | **`/audit-bundle` skill** | `skills/audit-bundle/` | The entry point: `/audit-bundle <repo-path>`. |
 | **Remediation recipe** | `recipes/audit-and-fix.yaml` | Staged: audit → **your approval** → fix → re-audit. |
@@ -32,7 +32,15 @@ bundle codifies that audit.
 ## Install
 
 ```bash
-amplifier bundle add git+https://github.com/michaeljabbour/amplifier-bundle-conformance@main
+amplifier bundle add git+https://github.com/michaeljabbour/amplifier-bundle-conformance@main && amplifier update
+```
+
+Or add it as an **app bundle** by including it in your bundle's `includes:`:
+
+```yaml
+includes:
+  - bundle: git+https://github.com/microsoft/amplifier-foundation@main
+  - bundle: git+https://github.com/michaeljabbour/amplifier-bundle-conformance@main
 ```
 
 ## Use
@@ -66,8 +74,10 @@ amplifier tool invoke recipes operation=execute \
 - **The rubric references, it doesn't copy.** Each check cites a `BUNDLE_GUIDE.md`
   §heading so the standard ages with its source instead of drifting.
 - **The auditor is a context sink.** The heavy rubric loads only when it runs; it
-  defers genuine ecosystem judgment to `foundation:foundation-expert` rather than
-  duplicating that knowledge.
+  defers genuine judgment calls to the experts rather than duplicating their
+  knowledge — **structural/shape** questions to `foundation:foundation-expert`,
+  **ecosystem-existence** questions ("does this already exist? should it be its own
+  module?") to `amplifier:amplifier-expert`.
 - **The recipe gates before editing.** No file changes until you approve the
   findings.
 

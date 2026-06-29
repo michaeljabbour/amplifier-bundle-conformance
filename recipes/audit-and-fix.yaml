@@ -1,0 +1,104 @@
+name: "audit-and-fix"
+description: >-
+  Amplifier-way conformance remediation loop for a bundle repo: AUDIT against the
+  rubric, pause for HUMAN APPROVAL, apply fixes for the approved findings, then
+  RE-AUDIT so the before/after is recorded. Staged with an approval gate so no file
+  is edited until you say so.
+version: "1.0.0"
+author: "Conformance bundle"
+tags: ["conformance", "audit", "bundle", "amplifier-way", "staged", "approval-gates"]
+
+# Requirements:
+#   - conformance bundle loaded (provides conformance:auditor + the rubric)
+#   - foundation loaded (provides foundation:foundation-expert + modular-builder)
+#
+# Usage:
+#   amplifier tool invoke recipes operation=execute \
+#     recipe_path=conformance:recipes/audit-and-fix.yaml \
+#     context='{"target_path": "~/dev/amplifier-bundle-foo"}'
+#
+# Approval workflow:
+#   - The recipe pauses at the "remediation" gate after the first audit.
+#   - Use `recipes operation=approvals` to see it, then `approve` / `deny`.
+#   - Deny = stop with findings only (no edits). Approve = fix, then re-audit.
+
+context:
+  target_path: ""   # Required: path to the bundle repo to audit
+
+stages:
+  # ---------------------------------------------------------------------------
+  # Stage 1: AUDIT — gather findings. No approval, no edits. Just the truth.
+  # ---------------------------------------------------------------------------
+  - name: "audit"
+    steps:
+      - id: "run-audit"
+        agent: "conformance:auditor"
+        prompt: |
+          Audit the amplifier bundle repo at: {{target_path}}
+
+          Apply the full Amplifier-way conformance rubric. Read the repo's own
+          bundle.md body and any docs/ for STATED intent before flagging — several
+          rules have legitimate exceptions. Every finding needs a file:line and a
+          foundation-doc citation. Escalate anything you cannot adjudicate from the
+          repo alone as an Open question rather than guessing.
+
+          Return your standard scored report (score, verdict, findings by severity,
+          what's right, open questions).
+        output: "audit_report"
+        timeout: 1800
+
+  # ---------------------------------------------------------------------------
+  # Stage 2: REMEDIATION — gated. Nothing below runs until a human approves.
+  # ---------------------------------------------------------------------------
+  - name: "remediation"
+    approval:
+      required: true
+      prompt: |
+        CONFORMANCE AUDIT COMPLETE — review before any files are changed.
+
+        {{audit_report}}
+
+        Approve to apply fixes for the ERROR and WARNING findings above, then
+        re-audit. Deny to stop here with the findings only (no edits made).
+    steps:
+      - id: "apply-fixes"
+        agent: "foundation:modular-builder"
+        prompt: |
+          Apply the remediation for this conformance audit of the bundle repo at
+          {{target_path}}:
+
+          ---
+          {{audit_report}}
+          ---
+
+          Rules of engagement:
+            1. Fix the ERROR findings first, then WARNINGs. Leave INFO findings unless
+               trivial.
+            2. Make the SMALLEST change that resolves each finding — match the fix the
+               auditor named. Do not refactor beyond the finding.
+            3. Do NOT "fix" anything the auditor listed as an Open question or a
+               legitimate exception. If a fix is ambiguous, delegate the single
+               question to foundation:foundation-expert rather than guessing.
+            4. Preserve behavior. Edit YAML/markdown/structure as needed; do not
+               rewrite working module code to chase style.
+
+          Report what you changed, file by file, and what you deliberately left alone.
+        output: "fix_report"
+        timeout: 3600
+
+      - id: "re-audit"
+        agent: "conformance:auditor"
+        prompt: |
+          Re-audit the amplifier bundle repo at {{target_path}} after remediation.
+
+          Fixes that were applied:
+          ---
+          {{fix_report}}
+          ---
+
+          Run the full rubric again from scratch (do not assume the fixes worked —
+          verify). Return your standard scored report so the before/after delta is
+          recorded. Call out explicitly any finding from the first pass that is still
+          open.
+        output: "final_report"
+        timeout: 1800

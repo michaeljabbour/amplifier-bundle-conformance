@@ -1,0 +1,43 @@
+bundle:
+  name: conformance-behavior
+  version: 0.1.0
+  description: |
+    Wires the Amplifier-way conformance capability onto a host bundle: the auditor
+    agent, the /audit-bundle skill (via tool-skills), and the audit-and-fix recipe
+    (via tool-recipes). The auditor delegates to foundation:foundation-expert for
+    ecosystem judgment rather than duplicating it, and the rubric REFERENCES the
+    foundation docs rather than copying them — so the standard ages with its source.
+
+tools:
+  # Expose THIS bundle's own skills/ dir (audit-bundle) for load_skill
+  # directory-discovery. config.skills uses a git SELF-REFERENCE — the only source
+  # form tool-skills resolves independent of runtime cwd (a bundle-local relative
+  # `skills:` path resolves against the RUNTIME cwd, and an @mention silently fails
+  # at mount; both verified the hard way in the occams-machete bundle).
+  # CAVEAT: the self-reference fetches from remote HEAD, so local-only edits to
+  # skills/ require a push + `amplifier update` before /audit-bundle is visible.
+  # Until first push, use the auditor agent directly: delegate(agent="conformance:auditor").
+  - module: tool-skills
+    source: git+https://github.com/microsoft/amplifier-bundle-skills@main#subdirectory=modules/tool-skills
+    config:
+      skills:
+        - "git+https://github.com/michaeljabbour/amplifier-bundle-conformance@main#subdirectory=skills"
+  # Lets the bundle's own audit-and-fix recipe (recipes/*.yaml) be executed.
+  - module: tool-recipes
+    source: git+https://github.com/microsoft/amplifier-bundle-recipes@main#subdirectory=modules/tool-recipes
+    config:
+      session_dir: ~/.amplifier/projects/{project}/recipe-sessions
+      auto_cleanup_days: 7
+
+# The auditor: a context sink. It loads the heavy rubric only when it runs, and
+# defers ecosystem judgment to foundation:foundation-expert (inherited from the
+# foundation bundle the root includes).
+agents:
+  include:
+    - conformance:auditor
+
+# Lightweight awareness only — always-on routing (<500 tokens). The heavy artifact
+# (the rubric) is a context sink the auditor @mentions on demand, NOT listed here.
+context:
+  include:
+    - conformance:context/conformance-awareness.md

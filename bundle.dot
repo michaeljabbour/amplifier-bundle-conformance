@@ -2,18 +2,18 @@ digraph conformance {
     rankdir=LR
     fontname="Helvetica"
     fontsize=12
-    label="conformance v0.1.0 — bundle repo"
+    label="conformance v0.2.0 — bundle repo"
     labelloc=t
     labeljust=c
     nodesep=0.6
     ranksep=0.7
     bgcolor="white"
-    source_hash="46a6294b0296615882d3e3f3e3d87af1550cfecb727206c663cbd9d64c91bae9"
+    source_hash="894d55164e123ddc59e49bcc88c474ae6d5c4822ad04084eeaab1399905e5b2b"
 
     node [fontname="Helvetica", fontsize=11, style="filled,rounded"]
     edge [fontname="Helvetica", fontsize=9]
 
-    root_conformance [label="conformance v0.1.0\n0 tools · 0 agents\n~766 tok aggregate", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", penwidth=2]
+    root_conformance [label="conformance v0.2.0\n0 tools · 0 agents\n~766 tok aggregate", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", penwidth=2]
 
     subgraph cluster_behaviors {
         label="Behaviors"

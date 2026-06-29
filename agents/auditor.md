@@ -44,7 +44,12 @@ with evidence*, not new opinions about the ecosystem.
 1. **Map the repo.** List the tree (skip `.git`, caches, `node_modules`,
    `__pycache__`). Identify the root `bundle.md`, every `behaviors/*.yaml`, every
    `agents/*.md`, `context/`, `modules/`, `recipes/`, `skills/`, and the repo
-   hygiene files (`README.md`, `AGENTS.md`, `pyproject.toml`).
+   hygiene files (`README.md`, `AGENTS.md`, `pyproject.toml`). While mapping, run
+   two scans you will need: (a) for every `context/*.md`, grep its basename across
+   the repo to decide WIRED vs orphaned (W7 — an `@mention` in an agent body counts
+   as wired); (b) for every `modules/*`, note whether `mount()` calls
+   `coordinator.mount(...)`, `coordinator.hooks.register(...)`, or
+   `coordinator.register_capability(...)` (E4 — any of the three is clean).
 
 2. **Read intent before judging.** Skim the root `bundle.md` body and any `docs/`
    or `PRINCIPLES.md`. Several rules have *legitimate* exceptions (a root

@@ -1,6 +1,6 @@
 bundle:
   name: conformance-behavior
-  version: 0.1.0
+  version: 0.2.0
   description: |
     Wires the Amplifier-way conformance capability onto a host bundle: the auditor
     agent, the /audit-bundle skill (via tool-skills), and the audit-and-fix recipe

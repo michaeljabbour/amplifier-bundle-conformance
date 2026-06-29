@@ -1,0 +1,76 @@
+/*
+ * value.dot — the UNIQUE VALUE of amplifier-bundle-conformance vs a plain agentic loop.
+ *
+ * This is a hand-authored CONCEPTUAL diagram (not the auto-generated structural
+ * bundle.dot). It contrasts "ask an LLM to review a bundle" against what the
+ * conformance auditor adds: a codified standard, scored + cited findings, expert
+ * escalation, and a gated remediation loop.
+ *
+ * Render:  dot -Tpng docs/value.dot -o docs/value.png
+ */
+digraph conformance_value {
+    rankdir=LR
+    bgcolor="#fbfdfc"
+    fontname="Helvetica"
+    pad=0.45
+    nodesep=0.6
+    ranksep=1.2
+    labelloc=t
+    label=<<font point-size="17" color="#102a26"><b>Conformance</b></font><font point-size="13" color="#546e7a">  — what it adds to a plain agentic loop</font><br/><br/><font point-size="11" color="#90a4ae">a plain loop asks </font><font point-size="11" color="#78909c"><i>"does it look ok?"</i></font><font point-size="11" color="#90a4ae">   ·   conformance asks </font><font point-size="11" color="#00695c"><b><i>"is it shaped right for the ecosystem?"</i></b></font><br/> >
+
+    node [shape=box, style="filled,rounded", fontname="Helvetica", fontsize=10, penwidth=1.1, margin="0.30,0.20", color="#cfd8dc"]
+    edge [fontname="Helvetica", fontsize=10, color="#9aa6a3", arrowsize=0.75, penwidth=1.2, labeldistance=1.4, labelfontcolor="#37474f"]
+
+    /* ───────────────  BASELINE: plain agentic loop  ─────────────── */
+    subgraph cluster_plain {
+        labeljust=l
+        label=<<font color="#78909c" point-size="11"><b>  Plain agentic loop  </b></font>>
+        style="rounded,filled"
+        fillcolor="#f3f5f6"
+        color="#dce3e6"
+        margin=18
+
+        p_in  [label=<<b>"review this bundle"</b>>, fillcolor="#eceff1", fontcolor="#455a64"]
+        p_llm [label=<<b>LLM</b><br/><font point-size="9" color="#607d8b">read · grep · bash</font>>, fillcolor="#eceff1", fontcolor="#455a64"]
+        p_out [label=<<b>prose opinion</b><br/><font point-size="9" color="#b3261e">✗ no score &nbsp; ✗ no file:line<br/>✗ no standard &nbsp; ✗ re-derived every run</font>>, fillcolor="#fbe9e7", fontcolor="#5d4037", color="#e6b8b0"]
+
+        p_in -> p_llm -> p_out
+    }
+
+    /* ───────────────  CONFORMANCE: the same loop, upgraded  ─────────────── */
+    subgraph cluster_conf {
+        labeljust=l
+        label=<<font color="#00695c" point-size="11"><b>  Same loop + conformance  </b></font>>
+        style="rounded,filled"
+        fillcolor="#eafaf7"
+        color="#a7e0d6"
+        margin=18
+
+        c_in     [label=<<b>/audit-bundle &lt;repo&gt;</b>>, fillcolor="#b2dfdb", fontcolor="#00463e", color="#4db6ac", penwidth=1.6]
+        c_rubric [label=<<font color="#b8860b">★</font> <b>Codified rubric</b><br/><font point-size="9" color="#00695c">E / W / I tiers · cites BUNDLE_GUIDE §<br/><i>the standard — not the model's mood</i></font>>, fillcolor="#80cbc4", fontcolor="#00332e", color="#00897b", penwidth=1.8]
+        c_llm    [label=<<b>Auditor</b><br/><font point-size="9" color="#00695c">read · grep · bash<br/>(the same agentic loop)</font>>, fillcolor="#d7f1ec", fontcolor="#00463e", color="#4db6ac"]
+        c_find   [label=<<font color="#b8860b">★</font> <b>Scored findings</b><br/><font point-size="9" color="#00695c">every finding: file:line + §authority<br/><b>0–100</b> · SHIP-SHAPED / NEEDS WORK</font>>, fillcolor="#80cbc4", fontcolor="#00332e", color="#00897b", penwidth=1.8]
+        c_exp    [label=<<font color="#b8860b">★</font> <b>Escalates — doesn't guess</b><br/><font point-size="9" color="#00695c">shape → foundation-expert<br/>"does it already exist?" → amplifier-expert</font>>, fillcolor="#80cbc4", fontcolor="#00332e", color="#00897b", penwidth=1.8]
+        c_loop   [label=<<font color="#b8860b">★</font> <b>Gated remediation</b><br/><font point-size="9" color="#00695c">audit → <b>you approve</b> → fix → re-audit</font>>, fillcolor="#80cbc4", fontcolor="#00332e", color="#00897b", penwidth=1.8]
+
+        c_rubric -> c_llm [label="grounds", fontcolor="#00897b", color="#4db6ac", style=dashed]
+        c_in   -> c_llm
+        c_llm  -> c_find
+        c_find -> c_exp  [label="open Qs", fontcolor="#00897b", color="#4db6ac"]
+        c_find -> c_loop [label="fix",      fontcolor="#00897b", color="#4db6ac"]
+        c_loop -> c_llm  [label="re-audit", fontcolor="#00897b", color="#4db6ac", style=dashed, constraint=false]
+    }
+
+    /* ───────────────  minimal legend (2 items, not 10)  ─────────────── */
+    subgraph cluster_legend {
+        labeljust=l
+        label=<<font color="#b0bec5" point-size="9"><b>  legend  </b></font>>
+        style="rounded,filled"
+        fillcolor="white"
+        color="#e4e9eb"
+        margin=10
+        l_base [label=<<font point-size="9">baseline — any agentic loop already does this</font>>, fillcolor="#eceff1", fontcolor="#607d8b", color="#cfd8dc"]
+        l_add  [label=<<font point-size="9"><font color="#b8860b">★</font> <b>added by conformance</b></font>>, fillcolor="#80cbc4", fontcolor="#00332e", color="#00897b", penwidth=1.6]
+        l_base -> l_add [style=invis]
+    }
+}

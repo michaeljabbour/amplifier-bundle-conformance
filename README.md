@@ -19,6 +19,20 @@ reinventing what foundation already gives you — has had **no repeatable, score
 check**. People do it by hand, inconsistently, every time they ship a bundle. This
 bundle codifies that audit.
 
+## Conformance vs. a plain agentic loop
+
+You can already ask any agent to "review this bundle." The difference is *what you
+get back*: a plain loop gives a prose opinion that's re-derived (differently) every
+run. Conformance turns that loop into a **repeatable instrument** — a codified
+rubric grounds it, findings come **scored and `file:line`-cited**, genuine doubt is
+**escalated to the right expert** instead of guessed, and fixes run through a
+**gated remediation loop**.
+
+![Conformance vs a plain agentic loop](docs/value.png)
+
+> Source: [`docs/value.dot`](docs/value.dot). (Distinct from the auto-generated
+> structural [`bundle.dot`](bundle.dot), which `validate-bundle-repo` regenerates.)
+
 ## What's in the box
 
 | Piece | Path | Role |

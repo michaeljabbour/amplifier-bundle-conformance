@@ -6,7 +6,10 @@ ecosystem." It's `impeccable`, but for bundle architecture instead of visual des
 
 ## Ways in
 
-- **`/audit-bundle <repo-path>`** — the entry point. Scores a bundle repo and
+- **`/audit` mode** — a sustained *audit posture*: treat the working repo (or a
+  named path) as a bundle to audit; findings are scored + file:line-cited; direct
+  edits are warned so fixes route through the gated recipe. `/mode off` to leave.
+- **`/audit-bundle <repo-path>`** — one-shot entry point. Scores a bundle repo and
   returns severity-tiered, file:line-cited findings. (Until this bundle's first
   `git push`, use the agent directly — see below.)
 - **`delegate(agent="conformance:auditor", instruction="Audit the bundle at <path>")`**

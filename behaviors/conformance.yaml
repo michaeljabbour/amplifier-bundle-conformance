@@ -1,12 +1,27 @@
 bundle:
   name: conformance-behavior
-  version: 0.2.1
+  version: 0.3.0
   description: |
     Wires the Amplifier-way conformance capability onto a host bundle: the auditor
-    agent, the /audit-bundle skill (via tool-skills), and the audit-and-fix recipe
-    (via tool-recipes). The auditor delegates to foundation:foundation-expert for
-    ecosystem judgment rather than duplicating it, and the rubric REFERENCES the
+    agent, the /audit-bundle skill (via tool-skills), the audit-and-fix recipe
+    (via tool-recipes), and the /audit conformance mode (via the modes system).
+    The auditor delegates to foundation:foundation-expert / amplifier:amplifier-expert
+    for ecosystem judgment rather than duplicating it, and the rubric REFERENCES the
     foundation docs rather than copying them — so the standard ages with its source.
+
+# Mount the modes system so /audit registers and switches at runtime.
+includes:
+  - bundle: git+https://github.com/microsoft/amplifier-bundle-modes@main#subdirectory=behaviors/modes.yaml
+
+hooks:
+  # hooks-mode discovers this bundle's modes/ dir and injects the active mode's
+  # guidance at session:start. The @conformance: prefix is resolved by hooks-mode's
+  # own @mention logic, not the bundle loader (same channel as tool-skills below).
+  - module: hooks-mode
+    source: git+https://github.com/microsoft/amplifier-bundle-modes@main#subdirectory=modules/hooks-mode
+    config:
+      search_paths:
+        - "@conformance:modes"
 
 tools:
   # Expose THIS bundle's own skills/ dir (audit-bundle) for load_skill
@@ -28,6 +43,11 @@ tools:
     config:
       session_dir: ~/.amplifier/projects/{project}/recipe-sessions
       auto_cleanup_days: 7
+  # Registers the /audit mode command + the runtime `mode` tool for switching.
+  - module: tool-mode
+    source: git+https://github.com/microsoft/amplifier-bundle-modes@main#subdirectory=modules/tool-mode
+    config:
+      gate_policy: "warn"
 
 # The auditor: a context sink. It loads the heavy rubric only when it runs, and
 # defers ecosystem judgment to foundation:foundation-expert (inherited from the

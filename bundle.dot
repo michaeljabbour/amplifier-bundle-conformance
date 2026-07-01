@@ -2,18 +2,18 @@ digraph conformance {
     rankdir=LR
     fontname="Helvetica"
     fontsize=12
-    label="conformance v0.2.1 — bundle repo"
+    label="conformance v0.3.0 — bundle repo"
     labelloc=t
     labeljust=c
     nodesep=0.6
     ranksep=0.7
     bgcolor="white"
-    source_hash="1d44daa34087ca47ac4092dfbcc372daa0d45fa4380cbd5e9e04912bd88f0a01"
+    source_hash="0f34d7906c6728cbc15d42be288d89e11c1874c03bdf17508e02837bd09ac51b"
 
     node [fontname="Helvetica", fontsize=11, style="filled,rounded"]
     edge [fontname="Helvetica", fontsize=9]
 
-    root_conformance [label="conformance v0.2.1\n0 tools · 0 agents\n~766 tok aggregate", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", penwidth=2]
+    root_conformance [label="conformance v0.3.0\n0 tools · 0 agents\n~766 tok aggregate", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", penwidth=2]
 
     subgraph cluster_behaviors {
         label="Behaviors"
@@ -21,7 +21,7 @@ digraph conformance {
         fillcolor="#f9f9f9"
         color="#999999"
 
-        beh_conformance_behavior [label="conformance-behavior\n2 tools · 1 ctx\n~973 tok", shape=box, fillcolor="#e0f2f1", style="filled,rounded"]
+        beh_conformance_behavior [label="conformance-behavior\n4 tools · 1 ctx\n~1275 tok", shape=box, fillcolor="#e0f2f1", style="filled,rounded"]
     }
 
     subgraph cluster_agents {
@@ -39,7 +39,7 @@ digraph conformance {
         fillcolor="#f9f9f9"
         color="#999999"
 
-        ctx_conformance_awareness_md [label="conformance-awareness.md\n~286 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
+        ctx_conformance_awareness_md [label="conformance-awareness.md\n~348 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
     }
 
     subgraph cluster_legend {

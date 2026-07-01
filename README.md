@@ -39,7 +39,8 @@ rubric grounds it, findings come **scored and `file:line`-cited**, genuine doubt
 |---|---|---|
 | **Auditor agent** | `agents/auditor.md` | Reads the repo, applies the rubric, cites foundation docs, and escalates genuine judgment calls to the experts (see below). |
 | **The rubric** | `context/rubric.md` | The codified, severity-tiered checks — each grounded in a foundation-doc §heading (referenced, not copied). |
-| **`/audit-bundle` skill** | `skills/audit-bundle/` | The entry point: `/audit-bundle <repo-path>`. |
+| **`/audit` mode** | `modes/audit.md` | A sustained *audit posture* — biases the whole session toward conformance-auditing the working repo; direct edits are warned so fixes route through the gated recipe. `/mode off` to leave. |
+| **`/audit-bundle` skill** | `skills/audit-bundle/` | One-shot entry point: `/audit-bundle <repo-path>`. |
 | **Remediation recipe** | `recipes/audit-and-fix.yaml` | Staged: audit → **your approval** → fix → re-audit. |
 | **Awareness** | `context/conformance-awareness.md` | Thin always-on routing (<500 tokens). |
 
